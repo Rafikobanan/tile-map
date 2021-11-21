@@ -1,0 +1,50 @@
+.tileMapWrapper {
+    overflow-x: scroll;
+
+    @media (min-width: 500px) {
+        display: flex;
+        justify-content: center;
+        overflow-x: visible;
+    }
+}
+
+.tileMap {
+    width: 100%;
+    min-width: 500px;
+
+    @media (min-width: 500px) {
+        width: 70%;
+    }
+}
+
+.timeManager {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.player {
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+}
+
+.playerButton {
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+}
+
+.prevButton {
+    cursor: pointer;
+    transform: rotate(180deg);
+    width: 24px;
+    height: 24px;
+}
+
+.nextButton {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+}
