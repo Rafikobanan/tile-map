@@ -5,7 +5,7 @@ import styles from './styles.module.scss';
 
 const TileMapTooltip = ({ children }) => {
     const tooltipRef = useRef(null);
-    const { tooltipData, elEvent } = useTooltip();
+    const { tooltipData, setTooltipData, elEvent } = useTooltip();
 
     useLayoutEffect(() => {
         const tooltipNode = tooltipRef.current;
@@ -23,7 +23,7 @@ const TileMapTooltip = ({ children }) => {
 
     if (!tooltipData) return null;
 
-    return ReactDOM.createPortal(<div ref={tooltipRef} className={styles.tooltip}>{children(tooltipData)}</div>, document.body);
+    return ReactDOM.createPortal(<div onClick={() => setTooltipData(null)} ref={tooltipRef} className={styles.tooltip}>{children(tooltipData)}</div>, document.body);
 };
 
 export default TileMapTooltip;
