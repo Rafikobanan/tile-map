@@ -6,31 +6,31 @@ const TileMapText = ({ data, cellSize, columnKey, textCreators, fill }) => {
     const textRef = useRef(null);
 
     useLayoutEffect(() => {
-        const textNode = textRef.current;
         const calculateTextXPosition = (data) => data[columnKey] * cellSize + cellSize / 2 - cellSize * 0.4;
 
-        const text = d3.select(textNode)
-            .selectAll(styles.text)
+        const texts = d3.select(textRef.current)
+            .selectAll(`.${styles.text}`)
             .data(data)
-            .enter()
-            .append('text')
-            .attr('class', styles.text)
             .attr('x', calculateTextXPosition)
             .attr('y', (data) => (data.row * cellSize) + (cellSize / 2 - 5))
-            .attr('fill', fill);
+            .html('');
 
         textCreators.forEach((textCreator, index) => {
-            text
+            texts
                 .append('tspan')
                 .attr('x', calculateTextXPosition)
                 .attr('dy', index * 20)
                 .text(textCreator)
         });
+    }, [cellSize, columnKey, data, textCreators]);
 
-        return () => textNode.innerHTML = '';
-    }, [cellSize, columnKey, data, fill, textCreators]);
-
-    return <g ref={textRef}></g>;
+    return (
+        <g ref={textRef}>
+            {data.map((_, index) => (
+                <text key={index} className={styles.text} fill={fill} />
+            ))}
+        </g>
+    );
 };
 
 export default TileMapText;

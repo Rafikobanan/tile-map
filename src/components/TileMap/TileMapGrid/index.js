@@ -1,26 +1,18 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { useTooltip } from '../tooltipContext';
+import styles from './styles.module.scss';
 
 const TileMapGrid = ({ stroke, data, cellSize, columnKey, rowKey }) => {
     const tileMapGrid = useRef(null);
     const { setTooltipData, setElEvent } = useTooltip();
 
     useLayoutEffect(() => {
-        const gridMapNode = tileMapGrid.current;
-
-        d3.select(gridMapNode)
-            .selectAll('.state')
+        d3.select(tileMapGrid.current)
+            .selectAll(`.${styles.gridCell}`)
             .data(data)
-            .enter()
-            .append('rect')
             .attr('x', (data) => data[columnKey] * cellSize)
             .attr('y', (data) => data[rowKey] * cellSize)
-            .attr('width', cellSize)
-            .attr('height', cellSize)
-            .attr('class', 'state')
-            .style('fill', 'transparent')
-            .style('stroke', stroke)
             .on('mousemove', (e, data) => {
                 setElEvent(e);
                 setTooltipData(data);
@@ -28,12 +20,16 @@ const TileMapGrid = ({ stroke, data, cellSize, columnKey, rowKey }) => {
             .on('mouseout', (d) => {
                 setTooltipData(null);
             });
-
-        return () => gridMapNode.innerHTML = '';
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data, cellSize, columnKey, rowKey, stroke]);
+    }, [data, columnKey, rowKey]);
 
-    return <g ref={tileMapGrid}></g>;
+    return (
+        <g ref={tileMapGrid}>
+            {data.map((_, index) => (
+                <rect key={index} className={styles.gridCell} stroke={stroke} width={cellSize} height={cellSize} />
+            ))}
+        </g>
+    );
 };
 
 export default TileMapGrid;
